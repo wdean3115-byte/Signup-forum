@@ -1,83 +1,169 @@
 import React from "react";
 
 export function Step3({ next, back, formData, setFormData }) {
-  
   const handleChange = (e) => {
-    const { name, value, files } = e.target;
-    // Handle file upload differently than text/date
-    if (name === "profileImage") {
-      setFormData((prev) => ({ ...prev, [name]: files[0] }));
-    } else {
-      setFormData((prev) => ({ ...prev, [name]: value }));
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const styles = {
+    wrapper: {
+      minHeight: "100vh",
+      width: "100vw",
+      backgroundColor: "#121212",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      margin: 0,
+      padding: 0,
+    },
+    card: {
+      position: "relative",
+      width: "100%",
+      maxWidth: "480px",
+      padding: "40px",
+      backgroundColor: "#1e1e1e",
+      borderRadius: "32px",
+      border: "1px solid rgba(255, 255, 255, 0.05)",
+      boxShadow: "0 20px 50px rgba(0, 0, 0, 0.5)",
+      overflow: "hidden",
+    },
+    progressBar: {
+      position: "absolute",
+      top: 0,
+      left: 0,
+      width: "100%",
+      height: "6px",
+      backgroundColor: "rgba(255, 255, 255, 0.05)",
+    },
+    progressFill: {
+      height: "100%",
+      width: "100%", // 100% for the final step
+      backgroundColor: "#FF1493",
+      boxShadow: "0 0 15px #FF1493",
+      transition: "width 0.5s ease",
+    },
+    textarea: {
+      width: "100%",
+      height: "120px",
+      backgroundColor: "#262626",
+      border: "1px solid #333",
+      borderRadius: "16px",
+      color: "white",
+      padding: "15px 20px",
+      fontSize: "16px",
+      outline: "none",
+      boxSizing: "border-box",
+      resize: "none",
     }
   };
 
   return (
-    <div className="w-screen h-screen bg-gray-100 flex items-center justify-center">
-      <div className="w-[480px] h-[655px] bg-white rounded-xl shadow-lg flex flex-col items-center p-8 gap-8">
-        
-        <div className="text-center">
-          <p className="text-[26px] font-bold">Join Us! 😎</p>
-          <p className="text-[18px] text-gray-500">
-            Almost there! Just a few more details.
-          </p>
+    <div style={styles.wrapper}>
+      <div style={styles.card}>
+        {/* Progress Bar */}
+        <div style={styles.progressBar}>
+          <div style={styles.progressFill}></div>
         </div>
 
-        <div className="flex flex-col w-full gap-10">
+        {/* Header */}
+        <div style={{ textAlign: "center", marginBottom: "30px" }}>
+          <p style={{ color: "#FF1493", fontSize: "11px", fontWeight: "900", letterSpacing: "2px", margin: 0 }}>STEP 3 OF 3</p>
+          <h2 style={{ color: "white", fontSize: "36px", fontWeight: "800", margin: "10px 0" }}>Join Us! 😎</h2>
+          <p style={{ color: "#8E8E8E", fontSize: "14px", margin: 0 }}>Almost there! Just one last step.</p>
+        </div>
+
+        <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
           
-          {/* Date of Birth Field */}
-          <div className="flex flex-col gap-2">
-            <div className="flex gap-1">
-              <p className="text-sm font-medium">Date of Birth</p>
-              <p className="text-red-500">*</p>
+          <InputField 
+            label="Date of Birth" 
+            name="birthDate" 
+            type="date" 
+            value={formData?.birthDate} 
+            onChange={handleChange} 
+          />
+
+          <div style={{ width: "100%" }}>
+            <div style={{ display: "flex", gap: "4px", marginBottom: "8px", marginLeft: "4px" }}>
+              <p style={{ color: "#8E8E8E", fontSize: "11px", fontWeight: "bold", margin: 0, letterSpacing: "1px" }}>ABOUT YOU</p>
+              <p style={{ color: "#FF1493", margin: 0 }}>*</p>
             </div>
-            <input
-              name="dob"
-              type="date"
-              value={formData?.dob || ""}
+            <textarea
+              name="bio"
+              value={formData?.bio || ""}
               onChange={handleChange}
-              className="border border-gray-300 focus:border-pink-600 outline-none rounded-md w-full h-[44px] px-3"
+              placeholder="Tell us a bit about yourself"
+              style={styles.textarea}
             />
           </div>
 
-          {/* Profile Image Field */}
-          <div className="flex flex-col gap-2">
-            <div className="flex gap-1">
-              <p className="text-sm font-medium">Profile Image</p>
-              <p className="text-red-500">*</p>
-            </div>
-            <div className="relative w-full h-[180px] bg-gray-50 border-2 border-dashed border-gray-300 rounded-lg flex flex-col items-center justify-center hover:bg-gray-100 transition cursor-pointer">
-              <input
-                name="profileImage"
-                type="file"
-                accept="image/*"
-                onChange={handleChange}
-                className="absolute inset-0 opacity-0 cursor-pointer"
-              />
-              <span className="text-gray-400 text-4xl mb-2">+</span>
-              <p className="text-gray-500 text-sm">
-                {formData?.profileImage ? formData.profileImage.name : "Click to upload image"}
-              </p>
-            </div>
-          </div>
-
           {/* Navigation Buttons */}
-          <div className="flex gap-3 mt-auto">
+          <div style={{ display: "flex", gap: "15px", marginTop: "10px" }}>
             <button
               onClick={back}
-              className="w-32 h-11 border-2 border-gray-300 rounded-md hover:bg-gray-50 transition"
+              style={{
+                flex: 1,
+                height: "60px",
+                backgroundColor: "transparent",
+                border: "1px solid #333",
+                color: "#8E8E8E",
+                borderRadius: "20px",
+                fontWeight: "bold",
+                cursor: "pointer"
+              }}
             >
               Back
             </button>
             <button
-              onClick={next}
-              className="flex-1 bg-black text-white h-11 rounded-md hover:bg-gray-800 transition font-semibold"
+              onClick={() => alert("Registration Complete!")}
+              style={{
+                flex: 2,
+                height: "60px",
+                backgroundColor: "#D81B60",
+                border: "none",
+                color: "white",
+                borderRadius: "20px",
+                fontWeight: "bold",
+                fontSize: "18px",
+                boxShadow: "0 10px 25px rgba(216, 27, 96, 0.3)",
+                cursor: "pointer"
+              }}
             >
-              Submit 3/3
+              Submit
             </button>
           </div>
         </div>
       </div>
+    </div>
+  );
+}
+
+function InputField({ label, name, type, value, onChange }) {
+  return (
+    <div style={{ width: "100%" }}>
+      <div style={{ display: "flex", gap: "4px", marginBottom: "8px", marginLeft: "4px" }}>
+        <p style={{ color: "#8E8E8E", fontSize: "11px", fontWeight: "bold", margin: 0, letterSpacing: "1px" }}>{label.toUpperCase()}</p>
+        <p style={{ color: "#FF1493", margin: 0 }}>*</p>
+      </div>
+      <input
+        name={name}
+        type={type}
+        value={value || ""}
+        onChange={onChange}
+        style={{
+          width: "100%",
+          height: "56px",
+          backgroundColor: "#262626",
+          border: "1px solid #333",
+          borderRadius: "16px",
+          color: "white",
+          padding: "0 20px",
+          fontSize: "16px",
+          outline: "none",
+          boxSizing: "border-box",
+          colorScheme: "dark" // Ensures the calendar icon and picker are dark
+        }}
+      />
     </div>
   );
 }
