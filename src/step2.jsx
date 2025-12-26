@@ -1,101 +1,118 @@
-import React, { useState } from "react";
+import React from "react";
 
 export function Step2({ next, back, formData, setFormData }) {
-  // Local state for basic validation or handling inputs
+  
+  // This is the function that makes typing work
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    // It updates the state in the Parent component
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const styles = {
+    wrapper: {
+      minHeight: "100vh",
+      width: "100vw",
+      backgroundColor: "#121212",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      fontFamily: "sans-serif",
+    },
+    card: {
+      position: "relative",
+      width: "100%",
+      maxWidth: "480px",
+      padding: "40px",
+      backgroundColor: "#1e1e1e",
+      borderRadius: "32px",
+      border: "1px solid rgba(255, 255, 255, 0.05)",
+      boxShadow: "0 20px 50px rgba(0, 0, 0, 0.5)",
+      overflow: "hidden",
+    },
+    input: {
+      width: "100%",
+      height: "56px",
+      backgroundColor: "#262626",
+      border: "1px solid #333",
+      borderRadius: "16px",
+      color: "white",
+      padding: "0 20px",
+      fontSize: "16px",
+      outline: "none",
+      boxSizing: "border-box", // Important to keep input inside the card
+    }
   };
 
   return (
-    <div className="w-screen h-screen bg-gray-100 flex items-center justify-center">
-      <div className="w-[480px] h-[655px] bg-white rounded-xl shadow-lg flex flex-col items-center p-8 gap-8">
+    <div style={styles.wrapper}>
+      <div style={styles.card}>
         
-        <div className="text-center">
-          <p className="text-[26px] font-bold">Join Us! 😎</p>
-          <p className="text-[18px] text-gray-500">
-            Please provide all current information accurately.
-          </p>
+        {/* Progress Bar (66%) */}
+        <div style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "6px", backgroundColor: "#333" }}>
+          <div style={{ height: "100%", width: "66%", backgroundColor: "#FF1493", boxShadow: "0 0 15px #FF1493" }}></div>
         </div>
 
-        <div className="flex flex-col w-full gap-6">
-          {/* Input Fields Container */}
-          <div className="flex flex-col gap-4">
-            
-            {/* Email Field */}
-            <InputField 
-              label="Email" 
-              name="email" 
-              type="email" 
-              value={formData?.email} 
-              onChange={handleChange} 
-            />
+        <div style={{ textAlign: "center", marginBottom: "30px" }}>
+          <p style={{ color: "#FF1493", fontSize: "11px", fontWeight: "bold", letterSpacing: "2px" }}>STEP 2 OF 3</p>
+          <h2 style={{ color: "white", fontSize: "36px", margin: "10px 0" }}>Contact Info</h2>
+        </div>
 
-            {/* Phone Number Field */}
-            <InputField 
-              label="Phone Number" 
-              name="phone" 
-              type="text" 
-              value={formData?.phone} 
-              onChange={handleChange} 
-            />
-
-            {/* Password Field */}
-            <InputField 
-              label="Password" 
-              name="password" 
-              type="password" 
-              value={formData?.password} 
-              onChange={handleChange} 
-            />
-
-            {/* Confirm Password Field */}
-            <InputField 
-              label="Confirm Password" 
-              name="confirmPassword" 
-              type="password" 
-              value={formData?.confirmPassword} 
-              onChange={handleChange} 
+        <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
+          
+          {/* Email Input */}
+          <div>
+            <label style={{ color: "#8E8E8E", fontSize: "11px", fontWeight: "bold", display: "block", marginBottom: "8px" }}>EMAIL *</label>
+            <input
+              style={styles.input}
+              name="email"
+              type="email"
+              placeholder="example@mail.com"
+              value={formData?.email || ""} // Pulls the value from Parent State
+              onChange={handleChange}      // Updates the Parent State
             />
           </div>
 
-          {/* Navigation Buttons */}
-          <div className="flex gap-3 mt-4">
-            <button
-              onClick={back}
-              className="flex-1 h-11 border-2 border-gray-300 rounded-md hover:bg-gray-50 transition"
-            >
+          {/* Phone Input */}
+          <div>
+            <label style={{ color: "#8E8E8E", fontSize: "11px", fontWeight: "bold", display: "block", marginBottom: "8px" }}>PHONE NUMBER *</label>
+            <input
+              style={styles.input}
+              name="phone"
+              type="text"
+              placeholder="+1 234 567 890"
+              value={formData?.phone || ""}
+              onChange={handleChange}
+            />
+          </div>
+
+          {/* Password Input */}
+          <div>
+            <label style={{ color: "#8E8E8E", fontSize: "11px", fontWeight: "bold", display: "block", marginBottom: "8px" }}>PASSWORD *</label>
+            <input
+              style={styles.input}
+              name="password"
+              type="password"
+              placeholder="••••••••"
+              value={formData?.password || ""}
+              onChange={handleChange}
+            />
+          </div>
+
+          {/* Buttons */}
+          <div style={{ display: "flex", gap: "15px", marginTop: "10px" }}>
+            <button onClick={back} style={{ flex: 1, height: "60px", background: "none", border: "1px solid #333", color: "white", borderRadius: "20px", cursor: "pointer" }}>
               Back
             </button>
-            <button
-              onClick={next}
-              className="flex-[2] bg-black text-white h-11 rounded-md hover:bg-gray-800 transition"
-            >
-              Continue 2/3
+            <button onClick={next} style={{ flex: 2, height: "60px", backgroundColor: "#D81B60", border: "none", color: "white", borderRadius: "20px", fontWeight: "bold", cursor: "pointer" }}>
+              Continue
             </button>
           </div>
         </div>
       </div>
-    </div>
-  );
-}
-
-// Reusable Input Component to keep code clean
-function InputField({ label, name, type, value, onChange }) {
-  return (
-    <div className="w-full">
-      <div className="flex gap-1 mb-1">
-        <p className="text-sm font-medium text-gray-700">{label}</p>
-        <p className="text-red-500">*</p>
-      </div>
-      <input
-        name={name}
-        type={type}
-        value={value || ""}
-        onChange={onChange}
-        placeholder="Your information"
-        className="border border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none rounded-md w-full h-[44px] px-3 transition"
-      />
     </div>
   );
 }
